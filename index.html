@@ -24,17 +24,21 @@
 <div id="text">But I love you and I will always love you <3</div>
 
 <script>
+    const startDate = new Date(2025, 11, 4, 7, 32, 26);
+
     function updateChrono() {
-        const startDate = new Date('2023-11-08T11:57:00');
         const now = new Date();
-        
-        let diff = now - startDate;
-        let seconds = Math.floor(diff / 1000) % 60;
-        let minutes = Math.floor(diff / (1000 * 60)) % 60;
-        let hours = Math.floor(diff / (1000 * 60 * 60)) % 24;
+
         let years = now.getFullYear() - startDate.getFullYear();
         let months = now.getMonth() - startDate.getMonth();
         let days = now.getDate() - startDate.getDate();
+        let hours = now.getHours() - startDate.getHours();
+        let minutes = now.getMinutes() - startDate.getMinutes();
+        let seconds = now.getSeconds() - startDate.getSeconds();
+
+        if (seconds < 0) { seconds += 60; minutes--; }
+        if (minutes < 0) { minutes += 60; hours--; }
+        if (hours < 0) { hours += 24; days--; }
 
         if (days < 0) {
             const prevMonthDays = new Date(now.getFullYear(), now.getMonth(), 0).getDate();
@@ -48,7 +52,8 @@
         }
 
         document.getElementById('chrono').innerHTML =
-            `${years} years, ${months} months, ${days} days, ${hours} hours, ${minutes} minutes, ${seconds} seconds`;
+            years + " years, " + months + " months, " + days + " days, " +
+            hours + " hours, " + minutes + " minutes, " + seconds + " seconds";
     }
 
     setInterval(updateChrono, 1000);
